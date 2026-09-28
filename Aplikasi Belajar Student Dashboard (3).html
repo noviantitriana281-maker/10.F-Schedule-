@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Siswa - Dashboard Belajar Kelas 10.F</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: 'var(--color-brand-50)',
+                            100: 'var(--color-brand-100)',
+                            200: 'var(--color-brand-200)',
+                            500: 'var(--color-brand-500)',
+                            600: 'var(--color-brand-600)',
+                            700: 'var(--color-brand-700)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --color-brand-50: #f5f3ff;
+            --color-brand-100: #ede9fe;
+            --color-brand-200: #ddd6fe;
+            --color-brand-500: #7c3aed;
+            --color-brand-600: #6d28d9;
+            --color-brand-700: #5b21b6;
+        }
+
+        .theme-purple {
+            --color-brand-50: #f5f3ff;
+            --color-brand-100: #ede9fe;
+            --color-brand-200: #ddd6fe;
+            --color-brand-500: #7c3aed;
+            --color-brand-600: #6d28d9;
+            --color-brand-700: #5b21b6;
+        }
+
+        .theme-blue {
+            --color-brand-50: #eff6ff;
+            --color-brand-100: #dbeafe;
+            --color-brand-200: #bfdbfe;
+            --color-brand-500: #2563eb;
+            --color-brand-600: #1d4ed8;
+            --color-brand-700: #1e40af;
+        }
+
+        .theme-green {
+            --color-brand-50: #f0fdf4;
+            --color-brand-100: #dcfce7;
+            --color-brand-200: #bbf7d0;
+            --color-brand-500: #16a34a;
+            --color-brand-600: #15803d;
+            --color-brand-700: #166534;
+        }
+
+        .theme-orange {
+            --color-brand-50: #fff7ed;
+            --color-brand-100: #ffedd5;
+            --color-brand-200: #fed7aa;
+            --color-brand-500: #ea580c;
+            --color-brand-600: #c2410c;
+            --color-brand-700: #9a3412;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.25s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans min-h-screen flex flex-col items-center justify-center p-0 sm:p-4 transition-colors duration-300">
+
+    <!-- Simulator Bingkai Smartphone -->
+    <div id="phone-frame" class="w-full max-w-md bg-white dark:bg-slate-800 sm:rounded-[40px] shadow-2xl border-0 sm:border-8 border-slate-800 dark:border-slate-700 h-screen sm:h-[860px] flex flex-col overflow-hidden relative transition-colors duration-300">
+        
+        <!-- Status Bar HP -->
+        <div class="px-6 pt-3 pb-1 flex justify-between items-center text-xs font-semibold select-none z-20 bg-white dark:bg-slate-800">
+            <span id="status-time">07:30</span>
+            <div class="flex items-center space-x-1.5">
+                <i class="fa-solid fa-signal text-[11px]"></i>
+                <i class="fa-solid fa-wifi text-[11px]"></i>
+                <i class="fa-solid fa-battery-full text-xs"></i>
+            </div>
+        </div>
+
+        <!-- AREA UTAMA APLIKASI -->
+        <main class="flex-1 overflow-y-auto relative p-4 pb-24 scroll-smooth">
+
+            <!-- SCREEN 1: BERANDA -->
+            <section id="view-beranda" class="view-screen fade-in space-y-5">
+                <!-- Header -->
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-xl font-bold flex items-center gap-1.5">
+                            Halo, <span id="user-display-name">Siswa 10.F</span> 
+                            <span class="inline-block animate-bounce">👋</span>
+                        </h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Selamat belajar di Kelas 10.F (Fase E)!</p>
+                    </div>
+                    <button onclick="showToast('Tidak ada notifikasi baru')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700/60 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition relative">
+                        <i class="fa-regular fa-bell text-slate-700 dark:text-slate-200 text-lg"></i>
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+
+                <!-- Kartu Pelajaran Utama -->
+                <div class="bg-gradient-to-r from-brand-50 to-brand-100 dark:from-slate-700 dark:to-slate-700/80 p-4 rounded-2xl relative overflow-hidden border border-brand-200/50 dark:border-slate-600">
+                    <span class="inline-block px-2.5 py-1 text-[11px] font-bold bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-200 rounded-lg shadow-sm">
+                        07.30 - 08.50 WIB
+                    </span>
+                    <p class="text-xs font-semibold text-brand-600 dark:text-brand-200 mt-2">Pelajaran Sekarang / Berikutnya</p>
+                    <h2 class="text-lg font-extrabold text-slate-800 dark:text-white mt-0.5">Biologi</h2>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 font-medium">Pengajar: Ibu Enung Yusi Suswanti K, S.Si, MM</p>
+                    
+                    <div class="flex items-center text-xs text-slate-500 dark:text-slate-400 mt-3 font-medium">
+                        <i class="fa-solid fa-location-dot text-brand-500 mr-1.5"></i>
+                        Ruang: Ruang Kelas 10.F (MAN 5 Bogor)
+                    </div>
+
+                    <!-- Dekorasi Vektor Vektor -->
+                    <div class="absolute right-2 bottom-1 w-24 h-24 pointer-events-none opacity-90">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-md">
+                            <path fill="#8B5CF6" d="M40,120 L120,160 L160,130 L80,90 Z" />
+                            <path fill="#A78BFA" d="M40,110 L120,150 L160,120 L80,80 Z" />
+                            <path fill="#C4B5FD" d="M40,100 L120,140 L160,110 L80,70 Z" />
+                            <path fill="#F59E0B" d="M30,80 L110,120 L150,90 L70,50 Z" />
+                            <path fill="#FBBF24" d="M30,70 L110,110 L150,80 L70,40 Z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Ringkasan Jadwal Hari Ini -->
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h3 class="font-bold text-sm">Jadwal Hari Ini (Kelas 10.F)</h3>
+                            <p class="text-[11px] text-slate-400" id="current-date-label">Senin, Hari Belajar</p>
+                        </div>
+                        <button onclick="switchTab('jadwal')" class="text-xs font-bold text-brand-600 dark:text-brand-200 hover:underline">Lihat Semua</button>
+                    </div>
+
+                    <div id="home-today-schedule" class="space-y-2.5">
+                        <!-- Loaded dynamically via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 2: JADWAL -->
+            <section id="view-jadwal" class="view-screen hidden fade-in space-y-4">
+                <div class="flex justify-between items-center">
+                    <button onclick="showToast('Menu kelas')" class="text-slate-600 dark:text-slate-300 hover:text-slate-900">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                    <h1 class="font-bold text-base">Jadwal Pelajaran Kelas 10.F</h1>
+                    <button onclick="openEditScheduleModal()" class="text-brand-600 dark:text-brand-300 font-bold text-xs flex items-center gap-1 bg-brand-50 dark:bg-brand-950/60 px-2.5 py-1 rounded-lg border border-brand-200 dark:border-brand-800">
+                        <i class="fa-solid fa-pen-to-square text-xs"></i> Tambah
+                    </button>
+                </div>
+
+                <!-- Filter Hari -->
+                <div class="flex space-x-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+                    <button onclick="selectDay(this, 'Senin')" class="day-btn px-4 py-2 rounded-xl bg-brand-500 text-white font-semibold transition shrink-0">Sen</button>
+                    <button onclick="selectDay(this, 'Selasa')" class="day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0">Sel</button>
+                    <button onclick="selectDay(this, 'Rabu')" class="day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0">Rab</button>
+                    <button onclick="selectDay(this, 'Kamis')" class="day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0">Kam</button>
+                    <button onclick="selectDay(this, 'Jumat')" class="day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0">Jum</button>
+                    <button onclick="selectDay(this, 'Sabtu')" class="day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0">Sab</button>
+                </div>
+
+                <div class="flex justify-between items-center text-xs">
+                    <p id="selected-day-label" class="text-slate-400 font-medium">Senin - Kelas 10.F</p>
+                    <span class="text-[10px] bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-md font-semibold">MAN 5 Bogor</span>
+                </div>
+
+                <!-- Daftar Pelajaran -->
+                <div id="schedule-list" class="space-y-3">
+                    <!-- Loaded dynamically via JS -->
+                </div>
+            </section>
+
+            <!-- SCREEN 3: TUGAS -->
+            <section id="view-tugas" class="view-screen hidden fade-in space-y-4">
+                <div class="flex justify-between items-center">
+                    <button onclick="showToast('Menu tugas')" class="text-slate-600 dark:text-slate-300">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                    <h1 class="font-bold text-base">Tugas Kelas 10.F</h1>
+                    <button onclick="openAddTaskModal()" class="w-7 h-7 bg-brand-500 hover:bg-brand-600 text-white rounded-full flex items-center justify-center transition">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Filter Status Tugas -->
+                <div class="flex space-x-2 text-xs">
+                    <button onclick="filterTasks('semua', this)" class="task-filter-btn px-4 py-1.5 rounded-xl bg-brand-500 text-white font-semibold transition">Semua</button>
+                    <button onclick="filterTasks('belum', this)" class="task-filter-btn px-4 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition">Belum Selesai</button>
+                    <button onclick="filterTasks('selesai', this)" class="task-filter-btn px-4 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition">Selesai</button>
+                </div>
+
+                <!-- Belum Selesai -->
+                <div id="section-task-belum" class="space-y-3">
+                    <div class="flex items-center text-xs font-bold text-rose-500 gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-rose-500"></span> Belum Selesai
+                    </div>
+
+                    <div id="tasks-todo-container" class="space-y-2.5">
+                        <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <button onclick="toggleTaskStatus(this)" class="w-8 h-8 rounded-xl bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-brand-200 flex items-center justify-center border border-brand-100 dark:border-slate-600 hover:bg-brand-500 hover:text-white transition">
+                                    <i class="fa-regular fa-file-lines text-sm"></i>
+                                </button>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100">Laporan Praktikum Biologi</h4>
+                                    <p class="text-[11px] text-slate-400">Guru: Ibu Enung Yusi Suswanti K, S.Si, MM</p>
+                                    <p class="text-[10px] text-slate-400 mt-1">Deadline: Minggu Ini</p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 text-[10px] font-semibold text-rose-500 bg-rose-50 dark:bg-rose-950/40 rounded-lg">Belum</span>
+                        </div>
+
+                        <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <button onclick="toggleTaskStatus(this)" class="w-8 h-8 rounded-xl bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-brand-200 flex items-center justify-center border border-brand-100 dark:border-slate-600 hover:bg-brand-500 hover:text-white transition">
+                                    <i class="fa-solid fa-calculator text-sm"></i>
+                                </button>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100">Latihan Soal Matematika</h4>
+                                    <p class="text-[11px] text-slate-400">Guru: Ibu Iti, M.Pd</p>
+                                    <p class="text-[10px] text-slate-400 mt-1">Deadline: Pekan Depan</p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 text-[10px] font-semibold text-rose-500 bg-rose-50 dark:bg-rose-950/40 rounded-lg">Belum</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Selesai -->
+                <div id="section-task-selesai" class="space-y-3 pt-2">
+                    <div class="flex items-center text-xs font-bold text-emerald-500 gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Selesai
+                    </div>
+
+                    <div id="tasks-done-container" class="space-y-2.5">
+                        <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center opacity-75">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-slate-800 text-emerald-600 flex items-center justify-center border border-emerald-100 dark:border-slate-600">
+                                    <i class="fa-solid fa-check text-xs"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100 line-through">Tugas Bahasa Indonesia</h4>
+                                    <p class="text-[11px] text-slate-400">Guru: Ibu Siti Farida Ridwan, S.Pd</p>
+                                    <p class="text-[10px] text-slate-400 mt-1">Selesai</p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg">Selesai</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 4: UJIAN -->
+            <section id="view-ujian" class="view-screen hidden fade-in space-y-4">
+                <div class="flex justify-between items-center">
+                    <button onclick="showToast('Ujian kelas')" class="text-slate-600 dark:text-slate-300">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                    <h1 class="font-bold text-base">Ujian Kelas 10.F</h1>
+                    <button onclick="showToast('Jadwal Ujian diperbarui')" class="text-slate-600 dark:text-slate-300">
+                        <i class="fa-regular fa-calendar text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Kartu Ujian Terdekat -->
+                <div>
+                    <h3 class="text-xs font-bold mb-2">Ujian Terdekat</h3>
+                    <div class="bg-white dark:bg-slate-700/70 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm relative overflow-hidden flex justify-between items-center">
+                        <div class="space-y-1 z-10">
+                            <h2 class="text-base font-extrabold text-slate-800 dark:text-white">Matematika</h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-300">Guru: Ibu Iti, M.Pd</p>
+                            <p class="text-[11px] text-slate-400 font-medium">Materi: Persamaan & Fungsi Kuadrat</p>
+                            
+                            <span class="inline-block mt-3 px-3 py-1 bg-brand-50 dark:bg-brand-950/50 text-brand-600 dark:text-brand-300 font-extrabold text-[11px] rounded-lg border border-brand-100 dark:border-brand-800">
+                                Segera Hadir
+                            </span>
+                        </div>
+
+                        <!-- Trophy Artwork -->
+                        <div class="w-20 h-20 relative flex items-center justify-center">
+                            <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md">
+                                <path fill="#FBBF24" d="M30 20 H70 V45 C70 58 60 65 50 65 C40 65 30 58 30 45 Z"/>
+                                <path fill="#F59E0B" d="M50 65 V78 H35 V85 H65 V78 H50 Z"/>
+                                <path fill="#FCD34D" d="M22 25 C15 25 15 42 30 42 V35 C20 35 20 28 22 25 Z"/>
+                                <path fill="#FCD34D" d="M78 25 C85 25 85 42 70 42 V35 C80 35 80 28 78 25 Z"/>
+                                <polygon fill="#FFF" points="50,28 53,34 60,35 55,40 56,47 50,43 44,47 45,40 40,35 47,34"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daftar Ujian -->
+                <div>
+                    <h3 class="text-xs font-bold mb-2.5">Jadwal Asesmen / UH Kelas 10.F</h3>
+                    <div class="space-y-2.5">
+                        <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-medium">Asesmen Harian</p>
+                                <h4 class="text-xs font-bold mt-0.5">Matematika</h4>
+                                <p class="text-[11px] text-slate-400">Pengajar: Ibu Iti, M.Pd</p>
+                            </div>
+                            <span class="px-2.5 py-1 text-[10px] font-bold text-brand-600 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/50 rounded-lg">Mendatang</span>
+                        </div>
+
+                        <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-medium">Asesmen Harian</p>
+                                <h4 class="text-xs font-bold mt-0.5">Biologi</h4>
+                                <p class="text-[11px] text-slate-400">Pengajar: Ibu Enung Yusi Suswanti K, S.Si, MM</p>
+                            </div>
+                            <span class="px-2.5 py-1 text-[10px] font-bold text-brand-600 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/50 rounded-lg">Mendatang</span>
+                        </div>
+
+                        <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                            <div>
+                                <p class="text-[10px] text-slate-400 font-medium">Asesmen Harian</p>
+                                <h4 class="text-xs font-bold mt-0.5">Informatika</h4>
+                                <p class="text-[11px] text-slate-400">Pengajar: Bapak Recky Taemima, S.Kom</p>
+                            </div>
+                            <span class="px-2.5 py-1 text-[10px] font-bold text-brand-600 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/50 rounded-lg">Mendatang</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 5: PROFIL -->
+            <section id="view-profil" class="view-screen hidden fade-in space-y-4">
+                <div class="flex justify-between items-center">
+                    <button onclick="showToast('Profil siswa')" class="text-slate-600 dark:text-slate-300">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                    <h1 class="font-bold text-base">Profil Siswa</h1>
+                    <button onclick="openShareModal()" class="text-brand-600 dark:text-brand-300 hover:text-brand-700">
+                        <i class="fa-solid fa-qrcode text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Avatar Profile Card -->
+                <div class="bg-white dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center relative">
+                    <div class="relative mb-2">
+                        <div class="w-20 h-20 rounded-full bg-amber-100 border-2 border-brand-500 overflow-hidden flex items-center justify-center">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <circle cx="50" cy="50" r="50" fill="#fef3c7" />
+                                <path d="M25 45 C 25 15, 75 15, 75 45 C 70 30, 30 30, 25 45 Z" fill="#1e293b"/>
+                                <circle cx="50" cy="48" r="22" fill="#fde68a" />
+                                <path d="M28 35 Q 50 15 72 35 Q 50 25 28 35 Z" fill="#0f172a"/>
+                                <path d="M20 90 L 80 90 L 70 65 L 30 65 Z" fill="#3b82f6"/>
+                                <path d="M42 65 L 50 85 L 58 65 Z" fill="#ffffff"/>
+                            </svg>
+                        </div>
+                        <button onclick="changeAvatar()" class="absolute bottom-0 right-0 w-6 h-6 bg-brand-500 text-white rounded-full flex items-center justify-center text-[10px] border border-white shadow">
+                            <i class="fa-solid fa-camera"></i>
+                        </button>
+                    </div>
+
+                    <h2 id="profile-name" class="font-bold text-sm text-slate-800 dark:text-white">Siswa Kelas 10.F</h2>
+                    <p id="profile-class" class="text-xs text-slate-400">Kelas 10.F (Fase E)</p>
+
+                    <div class="mt-3 flex items-center gap-2">
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-600 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                            <i class="fa-solid fa-kaaba text-emerald-500"></i>
+                            <span id="profile-school">MAN 5 Bogor</span>
+                        </div>
+                        <button onclick="openShareModal()" class="px-3 py-1 bg-brand-500 text-white rounded-xl text-xs font-semibold hover:bg-brand-600 transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-qrcode text-[11px]"></i> Kartu & QR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profile Actions -->
+                <div class="bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-700/50">
+                    <button onclick="editProfileModal()" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition rounded-t-2xl">
+                        <div class="flex items-center gap-3 text-xs">
+                            <i class="fa-regular fa-user text-slate-400 w-4"></i>
+                            <span class="font-medium">Informasi Akun & Kelas</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
+                    </button>
+
+                    <button onclick="openSettingsView()" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                        <div class="flex items-center gap-3 text-xs">
+                            <i class="fa-solid fa-palette text-slate-400 w-4"></i>
+                            <span class="font-medium">Tema & Tampilan Aplikasi</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span id="current-theme-mode-label" class="text-[11px] text-slate-400">Terang</span>
+                            <i class="fa-regular fa-sun text-slate-400 text-xs"></i>
+                        </div>
+                    </button>
+
+                    <button onclick="showToast('Aplikasi Versi 2.5.0 (Kelas 10.F Ready)')" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                        <div class="flex items-center gap-3 text-xs">
+                            <i class="fa-regular fa-circle-question text-slate-400 w-4"></i>
+                            <span class="font-medium">Tentang Aplikasi</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
+                    </button>
+
+                    <button onclick="logoutPrompt()" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-rose-50 dark:hover:bg-rose-950/20 text-rose-500 transition rounded-b-2xl">
+                        <div class="flex items-center gap-3 text-xs font-semibold">
+                            <i class="fa-solid fa-arrow-right-from-bracket w-4"></i>
+                            <span>Keluar</span>
+                        </div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SCREEN 6: PENGATURAN -->
+            <section id="view-pengaturan" class="view-screen hidden fade-in space-y-5">
+                <div class="flex justify-between items-center">
+                    <button onclick="switchTab('profil')" class="text-slate-600 dark:text-slate-300 flex items-center gap-1 text-xs font-bold">
+                        <i class="fa-solid fa-chevron-left"></i> Kembali
+                    </button>
+                    <h1 class="font-bold text-base">Pengaturan</h1>
+                    <div class="w-4"></div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tampilan Aplikasi</h3>
+
+                    <div>
+                        <p class="text-xs font-semibold mb-2">Pilih Warna Tema</p>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button onclick="setThemeColor('purple')" class="theme-card p-2 rounded-xl border-2 border-brand-500 bg-purple-50 dark:bg-slate-700 flex flex-col items-center justify-center relative">
+                                <div class="w-6 h-8 bg-purple-500 rounded-md shadow-sm mb-1"></div>
+                                <span class="text-[10px] font-bold">Ungu</span>
+                            </button>
+
+                            <button onclick="setThemeColor('blue')" class="theme-card p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-blue-50 dark:bg-slate-700 flex flex-col items-center justify-center relative">
+                                <div class="w-6 h-8 bg-blue-500 rounded-md shadow-sm mb-1"></div>
+                                <span class="text-[10px] font-bold">Biru</span>
+                            </button>
+
+                            <button onclick="setThemeColor('green')" class="theme-card p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-emerald-50 dark:bg-slate-700 flex flex-col items-center justify-center relative">
+                                <div class="w-6 h-8 bg-emerald-500 rounded-md shadow-sm mb-1"></div>
+                                <span class="text-[10px] font-bold">Hijau</span>
+                            </button>
+
+                            <button onclick="setThemeColor('orange')" class="theme-card p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-orange-50 dark:bg-slate-700 flex flex-col items-center justify-center relative">
+                                <div class="w-6 h-8 bg-orange-500 rounded-md shadow-sm mb-1"></div>
+                                <span class="text-[10px] font-bold">Oranye</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="text-xs font-semibold mb-2">Mode Tampilan</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="setDarkMode(false)" id="btn-mode-light" class="p-3 rounded-2xl border-2 border-brand-500 bg-white dark:bg-slate-700 flex items-center justify-between">
+                                <div class="flex items-center gap-2 text-xs font-semibold">
+                                    <i class="fa-regular fa-sun text-amber-500"></i>
+                                    <span>Terang</span>
+                                </div>
+                                <i class="fa-solid fa-circle-check text-brand-500 text-sm"></i>
+                            </button>
+
+                            <button onclick="setDarkMode(true)" id="btn-mode-dark" class="p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 flex items-center justify-between">
+                                <div class="flex items-center gap-2 text-xs font-semibold">
+                                    <i class="fa-regular fa-moon text-indigo-400"></i>
+                                    <span>Gelap</span>
+                                </div>
+                                <i class="fa-regular fa-circle text-slate-300 dark:text-slate-500 text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- NAVIGASI BAWAH -->
+        <nav class="absolute bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-t border-slate-100 dark:border-slate-700 px-3 py-2 flex justify-around items-center z-30">
+            
+            <button onclick="switchTab('beranda')" id="nav-beranda" class="nav-item flex flex-col items-center gap-1 text-brand-500 dark:text-brand-300 font-bold transition">
+                <i class="fa-solid fa-house text-base"></i>
+                <span class="text-[10px] font-bold">Beranda</span>
+            </button>
+
+            <button onclick="switchTab('jadwal')" id="nav-jadwal" class="nav-item flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 transition">
+                <i class="fa-regular fa-calendar-days text-base"></i>
+                <span class="text-[10px] font-medium">Jadwal</span>
+            </button>
+
+            <button onclick="switchTab('tugas')" id="nav-tugas" class="nav-item flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 transition">
+                <i class="fa-regular fa-pen-to-square text-base"></i>
+                <span class="text-[10px] font-medium">Tugas</span>
+            </button>
+
+            <button onclick="switchTab('ujian')" id="nav-ujian" class="nav-item flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 transition">
+                <i class="fa-solid fa-graduation-cap text-base"></i>
+                <span class="text-[10px] font-medium">Ujian</span>
+            </button>
+
+            <button onclick="switchTab('profil')" id="nav-profil" class="nav-item flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 transition">
+                <i class="fa-regular fa-user text-base"></i>
+                <span class="text-[10px] font-medium">Profil</span>
+            </button>
+
+        </nav>
+
+        <!-- Toast Notifikasi -->
+        <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 rounded-full text-xs font-semibold shadow-lg transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-brand-500"></i>
+            <span id="toast-message">Pesan Toast</span>
+        </div>
+
+        <!-- MODAL: Kartu Pelajar & QR Code -->
+        <div id="modal-share-qr" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-xs p-5 shadow-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center">
+                <div class="w-full flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-id-card text-brand-500"></i> Kartu & Barcode
+                    </h3>
+                    <button onclick="closeShareModal()" class="text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+
+                <div class="w-full bg-gradient-to-br from-brand-600 to-brand-700 text-white rounded-2xl p-4 shadow-md text-left relative overflow-hidden mb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-[9px] uppercase tracking-wider text-brand-200 font-bold">MAN 5 BOGOR</p>
+                            <h4 id="card-student-name" class="font-extrabold text-sm leading-tight mt-0.5">Siswa Kelas 10.F</h4>
+                            <p class="text-[10px] text-brand-100">NISN: 0081234567</p>
+                        </div>
+                        <span class="px-2 py-0.5 bg-white/20 text-white rounded text-[9px] font-bold">10.F</span>
+                    </div>
+
+                    <div class="mt-4 pt-2 border-t border-white/20 flex flex-col items-center bg-white/10 rounded-lg p-2">
+                        <svg class="w-full h-8" viewBox="0 0 200 40" preserveAspectRatio="none">
+                            <rect width="200" height="40" fill="transparent"/>
+                            <g fill="#FFFFFF">
+                                <rect x="5" y="0" width="3" height="40"/>
+                                <rect x="11" y="0" width="2" height="40"/>
+                                <rect x="16" y="0" width="5" height="40"/>
+                                <rect x="24" y="0" width="2" height="40"/>
+                                <rect x="29" y="0" width="4" height="40"/>
+                                <rect x="36" y="0" width="1" height="40"/>
+                                <rect x="40" y="0" width="6" height="40"/>
+                                <rect x="49" y="0" width="2" height="40"/>
+                                <rect x="54" y="0" width="3" height="40"/>
+                                <rect x="60" y="0" width="5" height="40"/>
+                                <rect x="68" y="0" width="2" height="40"/>
+                                <rect x="73" y="0" width="4" height="40"/>
+                                <rect x="80" y="0" width="1" height="40"/>
+                                <rect x="84" y="0" width="3" height="40"/>
+                                <rect x="90" y="0" width="6" height="40"/>
+                                <rect x="99" y="0" width="2" height="40"/>
+                                <rect x="104" y="0" width="4" height="40"/>
+                                <rect x="111" y="0" width="1" height="40"/>
+                                <rect x="115" y="0" width="5" height="40"/>
+                                <rect x="123" y="0" width="2" height="40"/>
+                                <rect x="128" y="0" width="3" height="40"/>
+                                <rect x="134" y="0" width="6" height="40"/>
+                                <rect x="143" y="0" width="2" height="40"/>
+                                <rect x="148" y="0" width="4" height="40"/>
+                                <rect x="155" y="0" width="1" height="40"/>
+                                <rect x="159" y="0" width="5" height="40"/>
+                                <rect x="167" y="0" width="2" height="40"/>
+                                <rect x="172" y="0" width="4" height="40"/>
+                                <rect x="179" y="0" width="2" height="40"/>
+                                <rect x="184" y="0" width="5" height="40"/>
+                                <rect x="192" y="0" width="3" height="40"/>
+                            </g>
+                        </svg>
+                        <span class="text-[9px] font-mono text-brand-100 tracking-widest mt-1">*10F-MAN5BOGOR*</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 dark:bg-slate-700/60 p-3 rounded-2xl border border-slate-200 dark:border-slate-600 mb-3 flex flex-col items-center">
+                    <p class="text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-2">QR Code Jadwal & Dashboard</p>
+                    <div class="bg-white p-2 rounded-xl shadow-sm border border-slate-100">
+                        <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://man5bogor.sch.id/kelas10f" alt="QR Code" class="w-32 h-32 object-contain" />
+                    </div>
+                </div>
+
+                <div class="w-full flex gap-2">
+                    <button onclick="copyAppLink()" class="flex-1 py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition shadow-sm">
+                        <i class="fa-regular fa-copy"></i> Salin Link
+                    </button>
+                    <button onclick="closeShareModal()" class="px-4 py-2.5 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold rounded-xl text-xs hover:bg-slate-50 dark:hover:bg-slate-700">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: Tambah Pelajaran -->
+        <div id="modal-edit-schedule" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-xs p-5 shadow-2xl border border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-sm">Tambah Pelajaran</h3>
+                    <button onclick="closeEditScheduleModal()" class="text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+                
+                <form onsubmit="handleSaveScheduleItem(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Hari</label>
+                        <select id="input-sched-day" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500">
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                            <option value="Sabtu">Sabtu</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Jam Pelajaran</label>
+                        <input id="input-sched-time" type="text" placeholder="Contoh: 07.30 - 08.50 WIB" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Mata Pelajaran</label>
+                        <input id="input-sched-subject" type="text" placeholder="Contoh: Biologi" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Nama Guru</label>
+                        <input id="input-sched-teacher" type="text" placeholder="Contoh: Ibu Dr. Hani, M.Si." required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500">
+                    </div>
+
+                    <div class="pt-2 flex gap-2">
+                        <button type="button" onclick="closeEditScheduleModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50">Batal</button>
+                        <button type="submit" class="flex-1 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold shadow-sm">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL: Tambah Tugas -->
+        <div id="modal-add-task" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-xs p-5 shadow-2xl border border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-sm">Tambah Tugas Baru</h3>
+                    <button onclick="closeAddTaskModal()" class="text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+                
+                <form onsubmit="handleAddTask(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Judul Tugas</label>
+                        <input id="input-task-title" type="text" placeholder="Contoh: Makalah Biologi" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Nama Guru / Mapel</label>
+                        <input id="input-task-subject" type="text" placeholder="Contoh: Ibu Enung Yusi, S.Si" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Tenggat Waktu (Deadline)</label>
+                        <input id="input-task-date" type="text" placeholder="Contoh: Besok / 20 Agustus" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500">
+                    </div>
+
+                    <div class="pt-2 flex gap-2">
+                        <button type="button" onclick="closeAddTaskModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50">Batal</button>
+                        <button type="submit" class="flex-1 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold shadow-sm">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL: Edit Profil -->
+        <div id="modal-edit-profile" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-xs p-5 shadow-2xl border border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-sm">Edit Profil Siswa</h3>
+                    <button onclick="closeEditProfileModal()" class="text-slate-400 hover:text-slate-600">
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+                
+                <form onsubmit="handleEditProfile(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Nama Siswa / Akun</label>
+                        <input id="input-profile-name" type="text" value="Siswa Kelas 10.F" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Kelas</label>
+                        <input id="input-profile-class" type="text" value="Kelas 10.F (Fase E)" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Sekolah</label>
+                        <input id="input-profile-school" type="text" value="MAN 5 Bogor" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500">
+                    </div>
+
+                    <div class="pt-2 flex gap-2">
+                        <button type="button" onclick="closeEditProfileModal()" class="flex-1 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold hover:bg-slate-50">Batal</button>
+                        <button type="submit" class="flex-1 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold shadow-sm">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- LOGIKA JAVASCRIPT APLIKASI -->
+    <script>
+        let activeDay = 'Senin';
+
+        const schedulesData = {
+            'Senin': [
+                { time: '06.45 - 07.30', subject: 'Upacara Bendera & Pembiasaan Dhuha', teacher: 'Tim Pembiasaan', type: 'event' },
+                { time: '07.30 - 08.50', subject: 'Biologi', teacher: 'Ibu Enung Yusi Suswanti K, S.Si, MM', type: 'lesson' },
+                { time: '08.50 - 09.10', subject: 'Istirahat I', teacher: '-', type: 'break' },
+                { time: '09.10 - 10.30', subject: 'Pendidikan Pancasila', teacher: 'Ibu Eka Puspita Handayani, S.Pd', type: 'lesson' },
+                { time: '10.30 - 11.50', subject: 'Bahasa Indonesia', teacher: 'Ibu Siti Farida Ridwan, S.Pd', type: 'lesson' },
+                { time: '11.50 - 13.00', subject: 'ISHOMA (Sholat Dzuhur & Istirahat)', teacher: '-', type: 'break' },
+                { time: '13.00 - 14.20', subject: 'Sejarah Kebudayaan Islam (SKI)', teacher: 'Bapak Murod Indrawan, S.Pd.I', type: 'lesson' }
+            ],
+            'Selasa': [
+                { time: '06.45 - 07.30', subject: 'Pembiasaan Serasi (Selasa Literasi)', teacher: 'Tim Pembiasaan', type: 'event' },
+                { time: '07.30 - 08.50', subject: 'Akidah Akhlak', teacher: 'Ibu Sonia Latif, S.Pd', type: 'lesson' },
+                { time: '08.50 - 10.10', subject: 'Informatika', teacher: 'Bapak Recky Taemima, S.Kom', type: 'lesson' },
+                { time: '10.10 - 10.30', subject: 'Istirahat I', teacher: '-', type: 'break' },
+                { time: '10.30 - 11.50', subject: 'Fiqih', teacher: 'Bapak Johana, S.Pd.I', type: 'lesson' },
+                { time: '11.50 - 13.00', subject: 'ISHOMA (Sholat Dzuhur & Istirahat)', teacher: '-', type: 'break' },
+                { time: '13.00 - 14.20', subject: 'Sosiologi', teacher: 'Ibu Lifia Kartika, S.Pd', type: 'lesson' },
+                { time: '14.20 - 15.20', subject: 'Al-Qur\'an Hadits', teacher: 'Ibu Husnul Khotimah, S.Pd', type: 'lesson' }
+            ],
+            'Rabu': [
+                { time: '06.45 - 07.30', subject: 'Pembiasaan Rahaja (Rabu Sehat Jasmani)', teacher: 'Tim Pembiasaan', type: 'event' },
+                { time: '07.30 - 08.50', subject: 'PJOK / Penjaskes', teacher: 'Bapak Erik Supriatna, S.Si', type: 'lesson' },
+                { time: '08.50 - 10.10', subject: 'KKA / Koding & AI', teacher: 'Bapak AANG, S.Kom', type: 'lesson' },
+                { time: '10.10 - 10.30', subject: 'Istirahat I', teacher: '-', type: 'break' },
+                { time: '10.30 - 11.50', subject: 'Fisika', teacher: 'Ibu Debby D Sinaga, S.Pd', type: 'lesson' },
+                { time: '11.50 - 13.00', subject: 'ISHOMA (Sholat Dzuhur & Istirahat)', teacher: '-', type: 'break' },
+                { time: '13.00 - 14.20', subject: 'Bahasa Arab', teacher: 'Bapak Tb. Faturohman, S.Ag', type: 'lesson' },
+                { time: '14.20 - 15.20', subject: 'Matematika', teacher: 'Ibu Iti, M.Pd', type: 'lesson' }
+            ],
+            'Kamis': [
+                { time: '06.45 - 07.30', subject: 'Pembiasaan Kasih (Kamis Bersih & Dhuha)', teacher: 'Tim Pembiasaan', type: 'event' },
+                { time: '07.30 - 08.50', subject: 'Bahasa Inggris', teacher: 'Ibu Nur Efita Dewi, S.Pd', type: 'lesson' },
+                { time: '08.50 - 10.10', subject: 'Matematika', teacher: 'Ibu Iti, M.Pd', type: 'lesson' },
+                { time: '10.10 - 10.30', subject: 'Istirahat I', teacher: '-', type: 'break' },
+                { time: '10.30 - 11.50', subject: 'Kimia', teacher: 'Ibu Sutinah, S.Pd', type: 'lesson' },
+                { time: '11.50 - 13.00', subject: 'ISHOMA (Sholat Dzuhur & Istirahat)', teacher: '-', type: 'break' },
+                { time: '13.00 - 14.20', subject: 'Bahasa Arab', teacher: 'Bapak Tb. Faturohman, S.Ag', type: 'lesson' },
+                { time: '14.20 - 15.20', subject: 'Geografi', teacher: 'Ibu Resa Kartika, S.Pd', type: 'lesson' }
+            ],
+            'Jumat': [
+                { time: '06.45 - 07.45', subject: 'Pembiasaan Jumadi (Jumat Rohani & Yasinan)', teacher: 'Tim Keagamaan', type: 'event' },
+                { time: '07.45 - 09.05', subject: 'Bahasa Sunda', teacher: 'Bapak Ahmad Suaidi, S.Pd.I', type: 'lesson' },
+                { time: '09.05 - 10.25', subject: 'Ekonomi', teacher: 'Ibu Eka Herdiana, M.Pd', type: 'lesson' },
+                { time: '10.25 - 12.45', subject: 'Sejarah & Sholat Jumat / ISHOMA', teacher: 'Bapak Febry', type: 'lesson' },
+                { time: '12.45 - 14.15', subject: 'Seni Budaya', teacher: 'Ibu Arti Sutarti Asyurawati, S.Sos', type: 'lesson' }
+            ],
+            'Sabtu': [
+                { time: '07.00 - 10.00', subject: 'Proyek P5RA (Profil Pelajar Rahmatan Lil Alamin)', teacher: 'Tim Koordinator P5RA', type: 'event' },
+                { time: '10.00 - 12.00', subject: 'Pengembangan Diri & Ekstrakurikuler', teacher: 'Pembina Ekstrakurikuler', type: 'event' }
+            ]
+        };
+
+        // Jam Digital
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('status-time').textContent = `${hours}:${minutes}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Render Ringkasan Beranda
+        function renderHomeSchedule() {
+            const container = document.getElementById('home-today-schedule');
+            const mondaySchedule = schedulesData['Senin'].filter(s => s.type !== 'break');
+
+            container.innerHTML = mondaySchedule.map((item, idx) => {
+                const isActive = idx === 1;
+                return `
+                    <div class="p-3 ${isActive ? 'bg-brand-50/70 dark:bg-brand-500/10 border-brand-200 dark:border-brand-500/30' : 'bg-white dark:bg-slate-700/50 border-slate-100 dark:border-slate-700'} rounded-xl border flex justify-between items-center transition">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs ${isActive ? 'font-bold text-brand-600 dark:text-brand-200' : 'font-semibold text-slate-400'} w-24">${item.time}</span>
+                            <div>
+                                <h4 class="text-xs font-bold ${isActive ? 'text-brand-700 dark:text-brand-200' : ''}">${item.subject}</h4>
+                                <p class="text-[11px] ${isActive ? 'text-brand-600/80 dark:text-brand-200/80' : 'text-slate-400'}">${item.teacher}</p>
+                            </div>
+                        </div>
+                        ${isActive ? '<span class="px-2 py-0.5 rounded-md bg-brand-500 text-white text-[10px] font-bold">Sekarang</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Tampilan Jadwal Per Hari
+        function renderScheduleView(dayName) {
+            activeDay = dayName;
+            const container = document.getElementById('schedule-list');
+            const items = schedulesData[dayName] || [];
+
+            document.getElementById('selected-day-label').textContent = `${dayName} - Jadwal Kelas 10.F`;
+
+            if (items.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-8">Tidak ada jadwal pelajaran.</p>';
+                return;
+            }
+
+            container.innerHTML = items.map(item => {
+                if (item.type === 'break') {
+                    return `
+                        <div class="p-2.5 bg-amber-50/70 dark:bg-amber-950/20 rounded-xl border border-amber-200/60 dark:border-amber-800/40 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-mug-hot text-amber-500 text-xs"></i>
+                                <span class="text-xs font-bold text-amber-700 dark:text-amber-300">${item.subject}</span>
+                            </div>
+                            <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400">${item.time}</span>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="flex items-start space-x-3 p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <span class="text-xs font-bold text-brand-600 dark:text-brand-200 w-24 pt-0.5">${item.time}</span>
+                        <div class="flex-1">
+                            <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100">${item.subject}</h4>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-300 mt-0.5 flex items-center gap-1">
+                                <i class="fa-solid fa-user-tie text-[10px] text-brand-500"></i> ${item.teacher}
+                            </p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Pilih Hari
+        function selectDay(button, dayName) {
+            const dayBtns = document.querySelectorAll('.day-btn');
+            dayBtns.forEach(btn => {
+                btn.className = 'day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0';
+            });
+            button.className = 'day-btn px-4 py-2 rounded-xl bg-brand-500 text-white font-semibold transition shrink-0';
+
+            renderScheduleView(dayName);
+        }
+
+        // Pindah Tab / Layar
+        function switchTab(tabName) {
+            const screens = document.querySelectorAll('.view-screen');
+            screens.forEach(s => s.classList.add('hidden'));
+
+            const activeScreen = document.getElementById(`view-${tabName}`);
+            if (activeScreen) {
+                activeScreen.classList.remove('hidden');
+            }
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.className = 'nav-item flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 transition';
+            });
+
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            if (activeNav) {
+                activeNav.className = 'nav-item flex flex-col items-center gap-1 text-brand-500 dark:text-brand-300 font-bold transition';
+            }
+        }
+
+        // Modal Jadwal
+        function openEditScheduleModal() {
+            document.getElementById('input-sched-day').value = activeDay;
+            const modal = document.getElementById('modal-edit-schedule');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeEditScheduleModal() {
+            const modal = document.getElementById('modal-edit-schedule');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function handleSaveScheduleItem(e) {
+            e.preventDefault();
+            const day = document.getElementById('input-sched-day').value;
+            const time = document.getElementById('input-sched-time').value;
+            const subject = document.getElementById('input-sched-subject').value;
+            const teacher = document.getElementById('input-sched-teacher').value;
+
+            if (!schedulesData[day]) schedulesData[day] = [];
+
+            schedulesData[day].push({
+                time: time,
+                subject: subject,
+                teacher: teacher,
+                type: 'lesson'
+            });
+
+            closeEditScheduleModal();
+            renderScheduleView(day);
+            renderHomeSchedule();
+            showToast(`Pelajaran baru untuk hari ${day} berhasil ditambahkan!`);
+        }
+
+        // Filter Tugas
+        function filterTasks(type, btn) {
+            const btns = document.querySelectorAll('.task-filter-btn');
+            btns.forEach(b => {
+                b.className = 'task-filter-btn px-4 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition';
+            });
+            btn.className = 'task-filter-btn px-4 py-1.5 rounded-xl bg-brand-500 text-white font-semibold transition';
+
+            const sectionBelum = document.getElementById('section-task-belum');
+            const sectionSelesai = document.getElementById('section-task-selesai');
+
+            if (type === 'semua') {
+                sectionBelum.classList.remove('hidden');
+                sectionSelesai.classList.remove('hidden');
+            } else if (type === 'belum') {
+                sectionBelum.classList.remove('hidden');
+                sectionSelesai.classList.add('hidden');
+            } else if (type === 'selesai') {
+                sectionBelum.classList.add('hidden');
+                sectionSelesai.classList.remove('hidden');
+            }
+        }
+
+        function toggleTaskStatus(btn) {
+            const taskCard = btn.closest('.p-3.5');
+            const title = taskCard.querySelector('h4').textContent;
+            const subject = taskCard.querySelectorAll('p')[0].textContent;
+
+            taskCard.remove();
+
+            const doneContainer = document.getElementById('tasks-done-container');
+            const doneItemHtml = `
+                <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center opacity-75">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-slate-800 text-emerald-600 flex items-center justify-center border border-emerald-100 dark:border-slate-600">
+                            <i class="fa-solid fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100 line-through">${title}</h4>
+                            <p class="text-[11px] text-slate-400">${subject}</p>
+                            <p class="text-[10px] text-slate-400 mt-1">Selesai baru saja</p>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg">Selesai</span>
+                </div>
+            `;
+            doneContainer.insertAdjacentHTML('afterbegin', doneItemHtml);
+            showToast(`Tugas "${title}" ditandai selesai! 🎉`);
+        }
+
+        function openAddTaskModal() {
+            const modal = document.getElementById('modal-add-task');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeAddTaskModal() {
+            const modal = document.getElementById('modal-add-task');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function handleAddTask(e) {
+            e.preventDefault();
+            const title = document.getElementById('input-task-title').value;
+            const subject = document.getElementById('input-task-subject').value;
+            const deadline = document.getElementById('input-task-date').value;
+
+            const todoContainer = document.getElementById('tasks-todo-container');
+            const newItemHtml = `
+                <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleTaskStatus(this)" class="w-8 h-8 rounded-xl bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-brand-200 flex items-center justify-center border border-brand-100 dark:border-slate-600 hover:bg-brand-500 hover:text-white transition">
+                            <i class="fa-regular fa-file-lines text-sm"></i>
+                        </button>
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100">${title}</h4>
+                            <p class="text-[11px] text-slate-400">${subject}</p>
+                            <p class="text-[10px] text-slate-400 mt-1">Deadline: ${deadline}</p>
+                        </div>
+                    </div>
+                    <span class="px-2.5 py-1 text-[10px] font-semibold text-rose-500 bg-rose-50 dark:bg-rose-950/40 rounded-lg">Belum</span>
+                </div>
+            `;
+            todoContainer.insertAdjacentHTML('afterbegin', newItemHtml);
+            
+            document.getElementById('input-task-title').value = '';
+            document.getElementById('input-task-subject').value = '';
+            document.getElementById('input-task-date').value = '';
+            closeAddTaskModal();
+
+            showToast('Tugas baru berhasil ditambahkan!');
+        }
+
+        function openSettingsView() {
+            switchTab('pengaturan');
+        }
+
+        function setThemeColor(colorName) {
+            document.body.className = document.body.className.replace(/theme-\w+/g, '');
+            document.body.classList.add(`theme-${colorName}`);
+            showToast(`Warna tema diubah ke ${colorName.toUpperCase()}`);
+        }
+
+        function setDarkMode(isDark) {
+            const html = document.documentElement;
+            const btnLight = document.getElementById('btn-mode-light');
+            const btnDark = document.getElementById('btn-mode-dark');
+            const modeLabel = document.getElementById('current-theme-mode-label');
+
+            if (isDark) {
+                html.classList.add('dark');
+                btnDark.className = 'p-3 rounded-2xl border-2 border-brand-500 bg-white dark:bg-slate-700 flex items-center justify-between';
+                btnDark.querySelector('i').className = 'fa-solid fa-circle-check text-brand-500 text-sm';
+
+                btnLight.className = 'p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 flex items-center justify-between';
+                btnLight.querySelector('i').className = 'fa-regular fa-circle text-slate-300 dark:text-slate-500 text-sm';
+
+                if (modeLabel) modeLabel.textContent = 'Gelap';
+                showToast('Mode Gelap diaktifkan');
+            } else {
+                html.classList.remove('dark');
+                btnLight.className = 'p-3 rounded-2xl border-2 border-brand-500 bg-white dark:bg-slate-700 flex items-center justify-between';
+                btnLight.querySelector('i').className = 'fa-solid fa-circle-check text-brand-500 text-sm';
+
+                btnDark.className = 'p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 flex items-center justify-between';
+                btnDark.querySelector('i').className = 'fa-regular fa-circle text-slate-300 dark:text-slate-500 text-sm';
+
+                if (modeLabel) modeLabel.textContent = 'Terang';
+                showToast('Mode Terang diaktifkan');
+            }
+        }
+
+        function editProfileModal() {
+            const modal = document.getElementById('modal-edit-profile');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeEditProfileModal() {
+            const modal = document.getElementById('modal-edit-profile');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function handleEditProfile(e) {
+            e.preventDefault();
+            const name = document.getElementById('input-profile-name').value;
+            const userClass = document.getElementById('input-profile-class').value;
+            const school = document.getElementById('input-profile-school').value;
+
+            document.getElementById('profile-name').textContent = name;
+            document.getElementById('user-display-name').textContent = name;
+            document.getElementById('profile-class').textContent = userClass;
+            document.getElementById('profile-school').textContent = school;
+
+            closeEditProfileModal();
+            showToast('Profil siswa berhasil diperbarui!');
+        }
+
+        function changeAvatar() {
+            showToast('Foto profil diperbarui');
+        }
+
+        function openShareModal() {
+            const modal = document.getElementById('modal-share-qr');
+            const studentName = document.getElementById('profile-name').textContent;
+            document.getElementById('card-student-name').textContent = studentName;
+
+            const currentUrl = window.location.href.includes('http') ? window.location.href : 'https://man5bogor.sch.id/kelas10f';
+            document.getElementById('qr-code-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(currentUrl)}`;
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+        }
+
+        function closeShareModal() {
+            const modal = document.getElementById('modal-share-qr');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function copyAppLink() {
+            const dummyLink = window.location.href.includes('http') ? window.location.href : 'https://man5bogor.sch.id/kelas10f';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(dummyLink);
+            }
+            showToast('Link Aplikasi berhasil disalin! 📋');
+        }
+
+        function logoutPrompt() {
+            showToast('Sesi belajar berhasil diakhiri.');
+        }
+
+        let toastTimeout;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = msg;
+
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+
+        // Inisialisasi
+        renderHomeSchedule();
+        renderScheduleView('Senin');
+    </script>
+</body>
+</html>
