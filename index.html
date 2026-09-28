@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aplikasi Siswa - Dashboard Belajar Kelas 10.F</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: 'var(--color-brand-50)',
+                            100: 'var(--color-brand-100)',
+                            200: 'var(--color-brand-200)',
+                            500: 'var(--color-brand-500)',
+                            600: 'var(--color-brand-600)',
+                            700: 'var(--color-brand-700)',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --color-brand-50: #f5f3ff;
+            --color-brand-100: #ede9fe;
+            --color-brand-200: #ddd6fe;
+            --color-brand-500: #7c3aed;
+            --color-brand-600: #6d28d9;
+            --color-brand-700: #5b21b6;
+        }
+
+        .theme-purple {
+            --color-brand-50: #f5f3ff;
+            --color-brand-100: #ede9fe;
+            --color-brand-200: #ddd6fe;
+            --color-brand-500: #7c3aed;
+            --color-brand-600: #6d28d9;
+            --color-brand-700: #5b21b6;
+        }
+
+        .theme-blue {
+            --color-brand-50: #eff6ff;
+            --color-brand-100: #dbeafe;
+            --color-brand-200: #bfdbfe;
+            --color-brand-500: #2563eb;
+            --color-brand-600: #1d4ed8;
+            --color-brand-700: #1e40af;
+        }
+
+        .theme-green {
+            --color-brand-50: #f0fdf4;
+            --color-brand-100: #dcfce7;
+            --color-brand-200: #bbf7d0;
+            --color-brand-500: #16a34a;
+            --color-brand-600: #15803d;
+            --color-brand-700: #166534;
+        }
+
+        .theme-orange {
+            --color-brand-50: #fff7ed;
+            --color-brand-100: #ffedd5;
+            --color-brand-200: #fed7aa;
+            --color-brand-500: #ea580c;
+            --color-brand-600: #c2410c;
+            --color-brand-700: #9a3412;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.2s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans min-h-screen flex flex-col items-center justify-center p-0 sm:p-4 transition-colors duration-300 select-none">
+
+    <!-- Bingkai Aplikasi HP -->
+    <div id="phone-frame" class="w-full max-w-md bg-white dark:bg-slate-800 sm:rounded-[40px] shadow-2xl border-0 sm:border-8 border-slate-800 dark:border-slate-700 h-[100dvh] sm:h-[860px] flex flex-col overflow-hidden relative transition-colors duration-300">
+        
+        <!-- AREA UTAMA APLIKASI -->
+        <main class="flex-1 overflow-y-auto relative p-4 pt-6 pb-28 scroll-smooth">
+
+            <!-- SCREEN 1: BERANDA -->
+            <section id="view-beranda" class="view-screen fade-in space-y-5">
+                <!-- Header -->
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h1 class="text-xl font-bold flex items-center gap-1.5">
+                            Halo, <span id="user-display-name">Siswa 10.F</span> 
+                            <span class="inline-block animate-bounce">👋</span>
+                        </h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Selamat belajar di Kelas 10.F (Fase E)!</p>
+                    </div>
+                    <button onclick="showToast('Tidak ada notifikasi baru')" class="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700/60 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition active:scale-95 cursor-pointer relative">
+                        <i class="fa-regular fa-bell text-slate-700 dark:text-slate-200 text-lg"></i>
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+
+                <!-- Kartu Pelajaran Utama Dynamic -->
+                <div id="home-featured-card" class="bg-gradient-to-r from-brand-50 to-brand-100 dark:from-slate-700 dark:to-slate-700/80 p-4 rounded-2xl relative overflow-hidden border border-brand-200/50 dark:border-slate-600 shadow-sm">
+                    <!-- Dynamic Content inserted via JS -->
+                </div>
+
+                <!-- Ringkasan Jadwal Otomatis -->
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h3 id="home-schedule-title" class="font-bold text-sm">Jadwal Hari Ini</h3>
+                            <p class="text-[11px] text-slate-400" id="current-date-label">Memuat Waktu...</p>
+                        </div>
+                        <button onclick="switchTab('jadwal')" class="text-xs font-bold text-brand-600 dark:text-brand-200 hover:underline active:scale-95 cursor-pointer">Lihat Semua</button>
+                    </div>
+
+                    <div id="home-today-schedule" class="space-y-2.5">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 2: JADWAL -->
+            <section id="view-jadwal" class="view-screen hidden fade-in space-y-4">
+                <div class="flex justify-between items-center">
+                    <button onclick="showToast('Menu Kelas 10.F')" class="text-slate-600 dark:text-slate-300 p-1 cursor-pointer active:scale-95">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                    <h1 class="font-bold text-base">Jadwal Pelajaran Kelas 10.F</h1>
+                    <button onclick="openModalById('modal-edit-schedule')" class="text-brand-600 dark:text-brand-300 font-bold text-xs flex items-center gap-1 bg-brand-50 dark:bg-brand-950/60 px-2.5 py-1.5 rounded-lg border border-brand-200 dark:border-brand-800 active:scale-95 cursor-pointer">
+                        <i class="fa-solid fa-plus text-xs"></i> Tambah
+                    </button>
+                </div>
+
+                <!-- Filter Hari (Senin - Jumat) -->
+                <div class="flex space-x-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+                    <button onclick="selectDay(this, 'Senin')" class="day-btn px-4 py-2 rounded-xl bg-brand-500 text-white font-semibold transition shrink-0 cursor-pointer active:scale-95">Sen</button>
+                    <button onclick="selectDay(this, 'Selasa')" class="day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0 cursor-pointer active:scale-95">Sel</button>
+                    <button onclick="selectDay(this, 'Rabu')" class="day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0 cursor-pointer active:scale-95">Rab</button>
+                    <button onclick="selectDay(this, 'Kamis')" class="day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0 cursor-pointer active:scale-95">Kam</button>
+                    <button onclick="selectDay(this, 'Jumat')" class="day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0 cursor-pointer active:scale-95">Jum</button>
+                </div>
+
+                <div class="flex justify-between items-center text-xs">
+                    <p id="selected-day-label" class="text-slate-400 font-medium">Senin - Kelas 10.F</p>
+                    <span class="text-[10px] bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-2 py-0.5 rounded-md font-semibold">MAN 5 Bogor</span>
+                </div>
+
+                <!-- Daftar Pelajaran -->
+                <div id="schedule-list" class="space-y-3">
+                    <!-- Loaded dynamically -->
+                </div>
+            </section>
+
+            <!-- SCREEN 3: TUGAS -->
+            <section id="view-tugas" class="view-screen hidden fade-in space-y-4">
+                <div class="flex justify-between items-center">
+                    <button onclick="showToast('Menu Tugas')" class="text-slate-600 dark:text-slate-300 p-1 cursor-pointer active:scale-95">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                    <h1 class="font-bold text-base">Tugas Kelas 10.F</h1>
+                    <button onclick="openModalById('modal-add-task')" class="w-8 h-8 bg-brand-500 hover:bg-brand-600 text-white rounded-full flex items-center justify-center transition active:scale-95 cursor-pointer shadow z-10" title="Tambah Tugas">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Filter Status Tugas -->
+                <div class="flex space-x-2 text-xs">
+                    <button onclick="filterTasks('semua', this)" class="task-filter-btn px-4 py-1.5 rounded-xl bg-brand-500 text-white font-semibold transition cursor-pointer active:scale-95">Semua</button>
+                    <button onclick="filterTasks('belum', this)" class="task-filter-btn px-4 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition cursor-pointer active:scale-95">Belum Selesai</button>
+                    <button onclick="filterTasks('selesai', this)" class="task-filter-btn px-4 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition cursor-pointer active:scale-95">Selesai</button>
+                </div>
+
+                <!-- Belum Selesai -->
+                <div id="section-task-belum" class="space-y-3">
+                    <div class="flex items-center justify-between text-xs font-bold text-rose-500">
+                        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-rose-500"></span> Belum Selesai</span>
+                    </div>
+                    <div id="tasks-todo-container" class="space-y-2.5">
+                        <!-- Dynamic task items or empty state -->
+                    </div>
+                </div>
+
+                <!-- Selesai -->
+                <div id="section-task-selesai" class="space-y-3 pt-2">
+                    <div class="flex items-center justify-between text-xs font-bold text-emerald-500">
+                        <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Selesai</span>
+                    </div>
+                    <div id="tasks-done-container" class="space-y-2.5">
+                        <!-- Dynamic finished task items -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 4: UJIAN -->
+            <section id="view-ujian" class="view-screen hidden fade-in space-y-4">
+                <div class="flex justify-between items-center">
+                    <button onclick="showToast('Ujian Kelas 10.F')" class="text-slate-600 dark:text-slate-300 p-1 cursor-pointer active:scale-95">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                    <h1 class="font-bold text-base">Ujian & Asesmen</h1>
+                    <button onclick="openModalById('modal-add-exam')" class="w-8 h-8 bg-brand-500 hover:bg-brand-600 text-white rounded-full flex items-center justify-center transition active:scale-95 cursor-pointer shadow z-10" title="Tambah Ujian">
+                        <i class="fa-solid fa-plus text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Daftar Ujian Dynamic -->
+                <div>
+                    <h3 class="text-xs font-bold mb-2.5">Jadwal Ujian / UH Kelas 10.F</h3>
+                    <div id="exams-container" class="space-y-2.5">
+                        <!-- Dynamic exams loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SCREEN 5: PROFIL -->
+            <section id="view-profil" class="view-screen hidden fade-in space-y-4">
+                <div class="flex justify-between items-center">
+                    <button onclick="showToast('Profil Siswa')" class="text-slate-600 dark:text-slate-300 p-1 cursor-pointer active:scale-95">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                    <h1 class="font-bold text-base">Profil Siswa</h1>
+                    <button onclick="openModalById('modal-share-qr')" class="text-brand-600 dark:text-brand-300 hover:text-brand-700 p-1 cursor-pointer active:scale-95">
+                        <i class="fa-solid fa-qrcode text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Avatar Profile Card -->
+                <div class="bg-white dark:bg-slate-700/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center relative shadow-sm">
+                    <div class="relative mb-2">
+                        <div class="w-20 h-20 rounded-full bg-amber-100 border-2 border-brand-500 overflow-hidden flex items-center justify-center">
+                            <svg viewBox="0 0 100 100" class="w-full h-full">
+                                <circle cx="50" cy="50" r="50" fill="#fef3c7" />
+                                <path d="M25 45 C 25 15, 75 15, 75 45 C 70 30, 30 30, 25 45 Z" fill="#1e293b"/>
+                                <circle cx="50" cy="48" r="22" fill="#fde68a" />
+                                <path d="M28 35 Q 50 15 72 35 Q 50 25 28 35 Z" fill="#0f172a"/>
+                                <path d="M20 90 L 80 90 L 70 65 L 30 65 Z" fill="#3b82f6"/>
+                                <path d="M42 65 L 50 85 L 58 65 Z" fill="#ffffff"/>
+                            </svg>
+                        </div>
+                        <button onclick="showToast('Foto profil berhasil diperbarui!')" class="absolute bottom-0 right-0 w-6 h-6 bg-brand-500 text-white rounded-full flex items-center justify-center text-[10px] border border-white shadow cursor-pointer active:scale-95">
+                            <i class="fa-solid fa-camera"></i>
+                        </button>
+                    </div>
+
+                    <h2 id="profile-name" class="font-bold text-sm text-slate-800 dark:text-white">Siswa Kelas 10.F</h2>
+                    <p id="profile-class" class="text-xs text-slate-400">Kelas 10.F (Fase E)</p>
+
+                    <div class="mt-3 flex items-center gap-2">
+                        <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-600 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                            <i class="fa-solid fa-kaaba text-emerald-500"></i>
+                            <span id="profile-school">MAN 5 Bogor</span>
+                        </div>
+                        <button onclick="openModalById('modal-share-qr')" class="px-3 py-1 bg-brand-500 text-white rounded-xl text-xs font-semibold hover:bg-brand-600 transition flex items-center gap-1 shadow-sm cursor-pointer active:scale-95">
+                            <i class="fa-solid fa-qrcode text-[11px]"></i> Kartu & QR
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Action List -->
+                <div class="bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 divide-y divide-slate-100 dark:divide-slate-700/50 shadow-sm">
+                    <button onclick="openModalById('modal-edit-profile')" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition rounded-t-2xl cursor-pointer active:bg-slate-100">
+                        <div class="flex items-center gap-3 text-xs">
+                            <i class="fa-regular fa-user text-slate-400 w-4"></i>
+                            <span class="font-medium">Edit Profil & Informasi Kelas</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
+                    </button>
+
+                    <button onclick="openSettingsView()" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition cursor-pointer active:bg-slate-100">
+                        <div class="flex items-center gap-3 text-xs">
+                            <i class="fa-solid fa-palette text-slate-400 w-4"></i>
+                            <span class="font-medium">Tema & Tampilan Aplikasi</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span id="current-theme-mode-label" class="text-[11px] text-slate-400">Terang</span>
+                            <i class="fa-regular fa-sun text-slate-400 text-xs"></i>
+                        </div>
+                    </button>
+
+                    <button onclick="showToast('Aplikasi Dashboard Belajar v2.5.0 (Kelas 10.F)')" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-slate-50 dark:hover:bg-slate-700 transition cursor-pointer active:bg-slate-100">
+                        <div class="flex items-center gap-3 text-xs">
+                            <i class="fa-regular fa-circle-question text-slate-400 w-4"></i>
+                            <span class="font-medium">Tentang Aplikasi</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-300"></i>
+                    </button>
+
+                    <button onclick="showToast('Sesi belajar diakhiri.')" class="w-full px-4 py-3 flex items-center justify-between text-left hover:bg-rose-50 dark:hover:bg-rose-950/20 text-rose-500 transition rounded-b-2xl cursor-pointer active:bg-rose-100">
+                        <div class="flex items-center gap-3 text-xs font-semibold">
+                            <i class="fa-solid fa-arrow-right-from-bracket w-4"></i>
+                            <span>Keluar</span>
+                        </div>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SCREEN 6: PENGATURAN -->
+            <section id="view-pengaturan" class="view-screen hidden fade-in space-y-5">
+                <div class="flex justify-between items-center">
+                    <button onclick="switchTab('profil')" class="text-slate-600 dark:text-slate-300 flex items-center gap-1 text-xs font-bold cursor-pointer active:scale-95">
+                        <i class="fa-solid fa-chevron-left"></i> Kembali
+                    </button>
+                    <h1 class="font-bold text-base">Pengaturan</h1>
+                    <div class="w-4"></div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tampilan Aplikasi</h3>
+
+                    <div>
+                        <p class="text-xs font-semibold mb-2">Pilih Warna Tema</p>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button onclick="setThemeColor('purple')" class="theme-card p-2 rounded-xl border-2 border-brand-500 bg-purple-50 dark:bg-slate-700 flex flex-col items-center justify-center cursor-pointer active:scale-95">
+                                <div class="w-6 h-8 bg-purple-500 rounded-md shadow-sm mb-1"></div>
+                                <span class="text-[10px] font-bold">Ungu</span>
+                            </button>
+
+                            <button onclick="setThemeColor('blue')" class="theme-card p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-blue-50 dark:bg-slate-700 flex flex-col items-center justify-center cursor-pointer active:scale-95">
+                                <div class="w-6 h-8 bg-blue-500 rounded-md shadow-sm mb-1"></div>
+                                <span class="text-[10px] font-bold">Biru</span>
+                            </button>
+
+                            <button onclick="setThemeColor('green')" class="theme-card p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-emerald-50 dark:bg-slate-700 flex flex-col items-center justify-center cursor-pointer active:scale-95">
+                                <div class="w-6 h-8 bg-emerald-500 rounded-md shadow-sm mb-1"></div>
+                                <span class="text-[10px] font-bold">Hijau</span>
+                            </button>
+
+                            <button onclick="setThemeColor('orange')" class="theme-card p-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-orange-50 dark:bg-slate-700 flex flex-col items-center justify-center cursor-pointer active:scale-95">
+                                <div class="w-6 h-8 bg-orange-500 rounded-md shadow-sm mb-1"></div>
+                                <span class="text-[10px] font-bold">Oranye</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <p class="text-xs font-semibold mb-2">Mode Tampilan</p>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="setDarkMode(false)" id="btn-mode-light" class="p-3 rounded-2xl border-2 border-brand-500 bg-white dark:bg-slate-700 flex items-center justify-between cursor-pointer active:scale-95">
+                                <div class="flex items-center gap-2 text-xs font-semibold">
+                                    <i class="fa-regular fa-sun text-amber-500"></i>
+                                    <span>Terang</span>
+                                </div>
+                                <i class="fa-solid fa-circle-check text-brand-500 text-sm"></i>
+                            </button>
+
+                            <button onclick="setDarkMode(true)" id="btn-mode-dark" class="p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 flex items-center justify-between cursor-pointer active:scale-95">
+                                <div class="flex items-center gap-2 text-xs font-semibold">
+                                    <i class="fa-regular fa-moon text-indigo-400"></i>
+                                    <span>Gelap</span>
+                                </div>
+                                <i class="fa-regular fa-circle text-slate-300 dark:text-slate-500 text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- NAVIGASI BAWAH -->
+        <nav class="absolute bottom-0 left-0 right-0 bg-white/95 dark:bg-slate-800/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-700 px-2 py-2 flex justify-around items-center z-30 shadow-lg">
+            
+            <button onclick="switchTab('beranda')" id="nav-beranda" class="nav-item flex-1 flex flex-col items-center gap-1 text-brand-500 dark:text-brand-300 font-bold transition cursor-pointer active:scale-95 py-1">
+                <i class="fa-solid fa-house text-base"></i>
+                <span class="text-[10px] font-bold">Beranda</span>
+            </button>
+
+            <button onclick="switchTab('jadwal')" id="nav-jadwal" class="nav-item flex-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 transition cursor-pointer active:scale-95 py-1">
+                <i class="fa-regular fa-calendar-days text-base"></i>
+                <span class="text-[10px] font-medium">Jadwal</span>
+            </button>
+
+            <button onclick="switchTab('tugas')" id="nav-tugas" class="nav-item flex-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 transition cursor-pointer active:scale-95 py-1">
+                <i class="fa-regular fa-pen-to-square text-base"></i>
+                <span class="text-[10px] font-medium">Tugas</span>
+            </button>
+
+            <button onclick="switchTab('ujian')" id="nav-ujian" class="nav-item flex-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 transition cursor-pointer active:scale-95 py-1">
+                <i class="fa-solid fa-graduation-cap text-base"></i>
+                <span class="text-[10px] font-medium">Ujian</span>
+            </button>
+
+            <button onclick="switchTab('profil')" id="nav-profil" class="nav-item flex-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 transition cursor-pointer active:scale-95 py-1">
+                <i class="fa-regular fa-user text-base"></i>
+                <span class="text-[10px] font-medium">Profil</span>
+            </button>
+
+        </nav>
+
+        <!-- Toast Notifikasi -->
+        <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 rounded-full text-xs font-semibold shadow-xl transition-all duration-300 opacity-0 pointer-events-none flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-brand-500"></i>
+            <span id="toast-message">Pesan Toast</span>
+        </div>
+
+        <!-- MODAL 1: Kartu Pelajar & QR Code -->
+        <div id="modal-share-qr" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200 hidden">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-xs p-5 shadow-2xl border border-slate-100 dark:border-slate-700 flex flex-col items-center text-center">
+                <div class="w-full flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-id-card text-brand-500"></i> Kartu & Barcode
+                    </h3>
+                    <button onclick="closeModalById('modal-share-qr')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+
+                <div class="w-full bg-gradient-to-br from-brand-600 to-brand-700 text-white rounded-2xl p-4 shadow-md text-left relative overflow-hidden mb-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-[9px] uppercase tracking-wider text-brand-200 font-bold">MAN 5 BOGOR</p>
+                            <h4 id="card-student-name" class="font-extrabold text-sm leading-tight mt-0.5">Siswa Kelas 10.F</h4>
+                            <p class="text-[10px] text-brand-100">NISN: 0081234567</p>
+                        </div>
+                        <span class="px-2 py-0.5 bg-white/20 text-white rounded text-[9px] font-bold">10.F</span>
+                    </div>
+
+                    <div class="mt-4 pt-2 border-t border-white/20 flex flex-col items-center bg-white/10 rounded-lg p-2">
+                        <svg class="w-full h-8" viewBox="0 0 200 40" preserveAspectRatio="none">
+                            <rect width="200" height="40" fill="transparent"/>
+                            <g fill="#FFFFFF">
+                                <rect x="5" y="0" width="3" height="40"/><rect x="11" y="0" width="2" height="40"/>
+                                <rect x="16" y="0" width="5" height="40"/><rect x="24" y="0" width="2" height="40"/>
+                                <rect x="29" y="0" width="4" height="40"/><rect x="36" y="0" width="1" height="40"/>
+                                <rect x="40" y="0" width="6" height="40"/><rect x="49" y="0" width="2" height="40"/>
+                                <rect x="54" y="0" width="3" height="40"/><rect x="60" y="0" width="5" height="40"/>
+                                <rect x="68" y="0" width="2" height="40"/><rect x="73" y="0" width="4" height="40"/>
+                                <rect x="80" y="0" width="1" height="40"/><rect x="84" y="0" width="3" height="40"/>
+                                <rect x="90" y="0" width="6" height="40"/><rect x="99" y="0" width="2" height="40"/>
+                                <rect x="104" y="0" width="4" height="40"/><rect x="111" y="0" width="1" height="40"/>
+                                <rect x="115" y="0" width="5" height="40"/><rect x="123" y="0" width="2" height="40"/>
+                                <rect x="128" y="0" width="3" height="40"/><rect x="134" y="0" width="6" height="40"/>
+                                <rect x="143" y="0" width="2" height="40"/><rect x="148" y="0" width="4" height="40"/>
+                                <rect x="155" y="0" width="1" height="40"/><rect x="159" y="0" width="5" height="40"/>
+                                <rect x="167" y="0" width="2" height="40"/><rect x="172" y="0" width="4" height="40"/>
+                                <rect x="179" y="0" width="2" height="40"/><rect x="184" y="0" width="5" height="40"/>
+                                <rect x="192" y="0" width="3" height="40"/>
+                            </g>
+                        </svg>
+                        <span class="text-[9px] font-mono text-brand-100 tracking-widest mt-1">*10F-MAN5BOGOR*</span>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 dark:bg-slate-700/60 p-3 rounded-2xl border border-slate-200 dark:border-slate-600 mb-3 flex flex-col items-center">
+                    <p class="text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-2">QR Code Jadwal & Dashboard</p>
+                    <div class="bg-white p-2 rounded-xl shadow-sm border border-slate-100">
+                        <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://man5bogor.sch.id/kelas10f" alt="QR Code" class="w-32 h-32 object-contain" />
+                    </div>
+                </div>
+
+                <div class="w-full flex gap-2">
+                    <button onclick="copyAppLink()" class="flex-1 py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 transition cursor-pointer active:scale-95 shadow-sm">
+                        <i class="fa-regular fa-copy"></i> Salin Link
+                    </button>
+                    <button onclick="closeModalById('modal-share-qr')" class="px-4 py-2.5 border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold rounded-xl text-xs hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer active:scale-95">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL 2: Tambah Pelajaran -->
+        <div id="modal-edit-schedule" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200 hidden">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-xs p-5 shadow-2xl border border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="font-bold text-sm">Tambah Pelajaran</h3>
+                    <button onclick="closeModalById('modal-edit-schedule')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+                
+                <form onsubmit="handleSaveScheduleItem(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Hari</label>
+                        <select id="input-sched-day" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                            <option value="Senin">Senin</option>
+                            <option value="Selasa">Selasa</option>
+                            <option value="Rabu">Rabu</option>
+                            <option value="Kamis">Kamis</option>
+                            <option value="Jumat">Jumat</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Jam Pelajaran</label>
+                        <input id="input-sched-time" type="text" placeholder="Contoh: 07.30 - 08.50 WIB" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Mata Pelajaran</label>
+                        <input id="input-sched-subject" type="text" placeholder="Contoh: Biologi" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Nama Guru</label>
+                        <input id="input-sched-teacher" type="text" placeholder="Contoh: Ibu Enung Yusi, S.Si, MM" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+
+                    <div class="pt-2 flex gap-2">
+                        <button type="button" onclick="closeModalById('modal-edit-schedule')" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer active:scale-95">Batal</button>
+                        <button type="submit" class="flex-1 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold shadow-sm cursor-pointer active:scale-95">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL 3: Tambah Tugas -->
+        <div id="modal-add-task" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200 hidden">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-xs p-5 shadow-2xl border border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-sm">Tambah Tugas Baru</h3>
+                    <button onclick="closeModalById('modal-add-task')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+                
+                <form onsubmit="handleAddTask(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Judul Tugas</label>
+                        <input id="input-task-title" type="text" placeholder="Contoh: Laporan Praktikum Biologi" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Nama Guru / Mapel</label>
+                        <input id="input-task-subject" type="text" placeholder="Contoh: Ibu Enung Yusi, S.Si" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Tenggat Waktu (Deadline)</label>
+                        <input id="input-task-date" type="text" placeholder="Contoh: Besok / 25 September" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+
+                    <div class="pt-2 flex gap-2">
+                        <button type="button" onclick="closeModalById('modal-add-task')" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer active:scale-95">Batal</button>
+                        <button type="submit" class="flex-1 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold shadow-sm cursor-pointer active:scale-95">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL 4: Tambah Ujian -->
+        <div id="modal-add-exam" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200 hidden">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-xs p-5 shadow-2xl border border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-sm">Tambah Ujian Baru</h3>
+                    <button onclick="closeModalById('modal-add-exam')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+                
+                <form onsubmit="handleAddExam(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Mata Pelajaran</label>
+                        <input id="input-exam-subject" type="text" placeholder="Contoh: Matematika" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Nama Guru</label>
+                        <input id="input-exam-teacher" type="text" placeholder="Contoh: Ibu Iti, M.Pd" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Jenis Ujian / Materi</label>
+                        <input id="input-exam-type" type="text" placeholder="Contoh: Asesmen Harian Bab 2" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+
+                    <div class="pt-2 flex gap-2">
+                        <button type="button" onclick="closeModalById('modal-add-exam')" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer active:scale-95">Batal</button>
+                        <button type="submit" class="flex-1 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold shadow-sm cursor-pointer active:scale-95">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL 5: Edit Profil -->
+        <div id="modal-edit-profile" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200 hidden">
+            <div class="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-xs p-5 shadow-2xl border border-slate-100 dark:border-slate-700">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-sm">Edit Profil Siswa</h3>
+                    <button onclick="closeModalById('modal-edit-profile')" class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+                
+                <form onsubmit="handleEditProfile(event)" class="space-y-3 text-xs">
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Nama Siswa / Akun</label>
+                        <input id="input-profile-name" type="text" value="Siswa Kelas 10.F" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Kelas</label>
+                        <input id="input-profile-class" type="text" value="Kelas 10.F (Fase E)" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block font-medium text-slate-500 mb-1">Sekolah</label>
+                        <input id="input-profile-school" type="text" value="MAN 5 Bogor" required class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700 border border-slate-200 dark:border-slate-600 focus:outline-none focus:border-brand-500 dark:text-white">
+                    </div>
+
+                    <div class="pt-2 flex gap-2">
+                        <button type="button" onclick="closeModalById('modal-edit-profile')" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 cursor-pointer active:scale-95">Batal</button>
+                        <button type="submit" class="flex-1 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold shadow-sm cursor-pointer active:scale-95">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let activeDay = 'Senin';
+
+        // Data Tugas & Ujian Lokal
+        let tasksList = [];
+        let examsList = [];
+
+        // Dynamic Schedule Data (Senin - Jumat) - Diperbarui sesuai jadwal terbaru
+        const schedulesData = {
+            'Senin': [
+                { time: '07.30 - 09.00', subject: 'Biologi', teacher: 'Ibu Enung Yusi Suswanti K, S.Si, MM', type: 'lesson' },
+                { time: '09.00 - 11.00', subject: 'Pendidikan Pancasila', teacher: 'Ibu Eka Puspita Handayani, S.Pd', type: 'lesson' },
+                { time: '11.00 - 13.50', subject: 'Bahasa Indonesia', teacher: 'Ibu Siti Farida Ridwan, S.Pd', type: 'lesson' },
+                { time: '13.50 - 15.10', subject: 'Sejarah Kebudayaan Islam (SKI)', teacher: 'Bapak Murod Indrawan, S.Pd.I', type: 'lesson' }
+            ],
+            'Selasa': [
+                { time: '07.00 - 08.30', subject: 'Akidah Akhlak', teacher: 'Ibu Sonia Latif, S.Pd', type: 'lesson' },
+                { time: '08.30 - 10.00', subject: 'TIK / Informatika', teacher: 'Bapak Recky Taemima, S.Kom', type: 'lesson' },
+                { time: '10.00 - 10.15', subject: 'Istirahat', teacher: '-', type: 'break' },
+                { time: '10.15 - 11.45', subject: 'Fiqih', teacher: 'Bapak Johana, S.Pd.I', type: 'lesson' },
+                { time: '11.45 - 12.30', subject: 'ISHOMA (Sholat Dzuhur & Istirahat)', teacher: '-', type: 'break' },
+                { time: '12.30 - 14.00', subject: 'Sosiologi', teacher: 'Ibu Lifia Kartika, S.Pd', type: 'lesson' },
+                { time: '14.00 - 15.25', subject: 'Al-Qur\'an Hadits', teacher: 'Ibu Husnul Khotimah, S.Pd', type: 'lesson' }
+            ],
+            'Rabu': [
+                { time: '07.00 - 08.30', subject: 'PJOK / Penjaskes', teacher: 'Bapak Erik Supriatna, S.Si', type: 'lesson' },
+                { time: '08.30 - 10.00', subject: 'KKA / Koding & AI', teacher: 'Bapak AANG, S.Kom', type: 'lesson' },
+                { time: '10.00 - 10.15', subject: 'Istirahat', teacher: '-', type: 'break' },
+                { time: '10.15 - 11.45', subject: 'Fisika', teacher: 'Ibu Debby D Sinaga, S.Pd', type: 'lesson' },
+                { time: '11.45 - 12.30', subject: 'ISHOMA (Sholat Dzuhur & Istirahat)', teacher: '-', type: 'break' },
+                { time: '12.30 - 14.00', subject: 'Bahasa Arab', teacher: 'Bapak Tb. Faturohman, S.Ag', type: 'lesson' },
+                { time: '14.00 - 15.25', subject: 'Matematika', teacher: 'Ibu Iti, M.Pd', type: 'lesson' }
+            ],
+            'Kamis': [
+                { time: '07.00 - 09.15', subject: 'Bahasa Inggris', teacher: 'Ibu Nur Efita Dewi, S.Pd', type: 'lesson' },
+                { time: '09.15 - 10.00', subject: 'Matematika', teacher: 'Ibu Iti, M.Pd', type: 'lesson' },
+                { time: '10.00 - 10.15', subject: 'Istirahat', teacher: '-', type: 'break' },
+                { time: '10.15 - 11.45', subject: 'Kimia', teacher: 'Ibu Sutinah, S.Pd', type: 'lesson' },
+                { time: '11.45 - 12.30', subject: 'ISHOMA (Sholat Dzuhur & Istirahat)', teacher: '-', type: 'break' },
+                { time: '12.30 - 13.50', subject: 'Bahasa Arab', teacher: 'Bapak Tb. Faturohman, S.Ag', type: 'lesson' },
+                { time: '13.50 - 15.05', subject: 'Geografi', teacher: 'Ibu Resa Kartika, S.Pd', type: 'lesson' }
+            ],
+            'Jumat': [
+                { time: '07.00 - 08.30', subject: 'Bahasa Sunda', teacher: 'Bapak Ahmad Suaidi, S.Pd.I', type: 'lesson' },
+                { time: '08.30 - 10.00', subject: 'Ekonomi', teacher: 'Ibu Eka Herdiana, M.Pd', type: 'lesson' },
+                { time: '10.00 - 10.15', subject: 'Istirahat', teacher: '-', type: 'break' },
+                { time: '10.15 - 11.40', subject: 'Sejarah', teacher: 'Bapak Febry', type: 'lesson' },
+                { time: '11.40 - 13.00', subject: 'Sholat Jumat & ISHOMA', teacher: '-', type: 'break' },
+                { time: '13.00 - 14.30', subject: 'Seni Budaya', teacher: 'Ibu Arti Sutarti Asyurawati, S.Sos', type: 'lesson' }
+            ]
+        };
+
+        const dayNamesIndo = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const schoolDaysList = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat'];
+
+        // Helper Konversi Jam ke Menit (Mendukung format titik '.' maupun titik dua ':')
+        function parseTimeRange(timeStr) {
+            const cleaned = timeStr.replace('WIB', '').trim();
+            const parts = cleaned.split('-').map(s => s.trim());
+            if (parts.length < 2) return { start: 0, end: 0 };
+            
+            const parseMinutes = (t) => {
+                const normalized = t.replace(':', '.');
+                const [h, m] = normalized.split('.').map(Number);
+                return (h || 0) * 60 + (m || 0);
+            };
+
+            return {
+                start: parseMinutes(parts[0]),
+                end: parseMinutes(parts[1])
+            };
+        }
+
+        // Penentu Hari Beranda (Hari Ini vs Hari Besok)
+        function getBerandaTargetDay() {
+            const now = new Date();
+            const dayIdx = now.getDay(); // 0: Sun, 1: Mon, ..., 6: Sat
+            const currentMins = now.getHours() * 60 + now.getMinutes();
+
+            const realDayName = dayNamesIndo[dayIdx];
+
+            // Jika Sabtu atau Minggu -> Tampilkan Senin
+            if (dayIdx === 0 || dayIdx === 6) {
+                return {
+                    targetDay: 'Senin',
+                    isTomorrow: true,
+                    label: 'Jadwal Hari Senin (Mendatang)',
+                    subLabel: 'Akhir Pekan - Persiapan Hari Senin'
+                };
+            }
+
+            // Jika Senin - Jumat
+            const todaySchedules = schedulesData[realDayName] || [];
+            let lastEndTime = 0;
+            if (todaySchedules.length > 0) {
+                const lastItem = todaySchedules[todaySchedules.length - 1];
+                lastEndTime = parseTimeRange(lastItem.time).end;
+            }
+
+            // Jika jam sekarang sudah melewati jam pelajaran terakhir hari ini
+            if (currentMins >= lastEndTime && lastEndTime > 0) {
+                const currentSchoolIdx = schoolDaysList.indexOf(realDayName);
+                let nextDay = 'Senin';
+                if (currentSchoolIdx !== -1 && currentSchoolIdx < schoolDaysList.length - 1) {
+                    nextDay = schoolDaysList[currentSchoolIdx + 1];
+                }
+
+                return {
+                    targetDay: nextDay,
+                    isTomorrow: true,
+                    label: `Jadwal Hari ${nextDay}`,
+                    subLabel: `Pembelajaran Hari ${realDayName} Telah Selesai 🎉`
+                };
+            } else {
+                return {
+                    targetDay: realDayName,
+                    isTomorrow: false,
+                    label: `Jadwal Hari Ini (${realDayName})`,
+                    subLabel: `Hari Belajar - ${realDayName}`
+                };
+            }
+        }
+
+        // Jam Digital Realtime
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const statusTime = document.getElementById('status-time');
+            if (statusTime) statusTime.textContent = `${hours}:${minutes}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Modal Helpers
+        function openModalById(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+            }, 20);
+        }
+
+        function closeModalById(id) {
+            const modal = document.getElementById(id);
+            if (!modal) return;
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        // Render Beranda Utama
+        function renderHomeSchedule() {
+            const { targetDay, isTomorrow, label, subLabel } = getBerandaTargetDay();
+            const now = new Date();
+            const currentMins = now.getHours() * 60 + now.getMinutes();
+
+            document.getElementById('home-schedule-title').textContent = label;
+            document.getElementById('current-date-label').textContent = subLabel;
+
+            const daySchedule = (schedulesData[targetDay] || []).filter(s => s.type !== 'break');
+            
+            // Cari pelajaran yang aktif sekarang (jika hari ini)
+            let activeIndex = -1;
+            if (!isTomorrow) {
+                daySchedule.forEach((item, idx) => {
+                    const range = parseTimeRange(item.time);
+                    if (currentMins >= range.start && currentMins <= range.end) {
+                        activeIndex = idx;
+                    }
+                });
+            }
+
+            // Render Featured Top Card
+            const featuredContainer = document.getElementById('home-featured-card');
+            const featuredLesson = activeIndex !== -1 ? daySchedule[activeIndex] : (daySchedule[0] || null);
+
+            if (featuredLesson) {
+                featuredContainer.innerHTML = `
+                    <span class="inline-block px-2.5 py-1 text-[11px] font-bold bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-200 rounded-lg shadow-sm">
+                        ${featuredLesson.time}
+                    </span>
+                    <p class="text-xs font-semibold text-brand-600 dark:text-brand-200 mt-2">
+                        ${activeIndex !== -1 ? 'Sedang Berlangsung Sekarang' : (isTomorrow ? 'Pelajaran Pertama Besok' : 'Pelajaran Berikutnya')}
+                    </p>
+                    <h2 class="text-lg font-extrabold text-slate-800 dark:text-white mt-0.5">${featuredLesson.subject}</h2>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 font-medium">Pengajar: ${featuredLesson.teacher}</p>
+                    
+                    <div class="flex items-center text-xs text-slate-500 dark:text-slate-400 mt-3 font-medium">
+                        <i class="fa-solid fa-location-dot text-brand-500 mr-1.5"></i>
+                        Ruang: Ruang Kelas 10.F (MAN 5 Bogor)
+                    </div>
+
+                    <div class="absolute right-2 bottom-1 w-24 h-24 pointer-events-none opacity-90">
+                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full drop-shadow-md">
+                            <path fill="#8B5CF6" d="M40,120 L120,160 L160,130 L80,90 Z" />
+                            <path fill="#A78BFA" d="M40,110 L120,150 L160,120 L80,80 Z" />
+                            <path fill="#C4B5FD" d="M40,100 L120,140 L160,110 L80,70 Z" />
+                            <path fill="#F59E0B" d="M30,80 L110,120 L150,90 L70,50 Z" />
+                            <path fill="#FBBF24" d="M30,70 L110,110 L150,80 L70,40 Z" />
+                        </svg>
+                    </div>
+                `;
+            } else {
+                featuredContainer.innerHTML = `
+                    <p class="text-xs font-bold text-slate-500">Tidak ada jadwal untuk ditampilkan.</p>
+                `;
+            }
+
+            // Render List Jadwal di Beranda
+            const container = document.getElementById('home-today-schedule');
+            container.innerHTML = daySchedule.map((item, idx) => {
+                const isActive = idx === activeIndex;
+                return `
+                    <div class="p-3 ${isActive ? 'bg-brand-50/80 dark:bg-brand-500/10 border-brand-200 dark:border-brand-500/30' : 'bg-white dark:bg-slate-700/50 border-slate-100 dark:border-slate-700'} rounded-xl border flex justify-between items-center transition shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs ${isActive ? 'font-bold text-brand-600 dark:text-brand-200' : 'font-semibold text-slate-400'} w-24">${item.time}</span>
+                            <div>
+                                <h4 class="text-xs font-bold ${isActive ? 'text-brand-700 dark:text-brand-200' : ''}">${item.subject}</h4>
+                                <p class="text-[11px] ${isActive ? 'text-brand-600/80 dark:text-brand-200/80' : 'text-slate-400'}">${item.teacher}</p>
+                            </div>
+                        </div>
+                        ${isActive ? '<span class="px-2 py-0.5 rounded-md bg-brand-500 text-white text-[10px] font-bold shrink-0">Sekarang</span>' : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Tampilan Jadwal Per Hari di Tab Jadwal
+        function renderScheduleView(dayName) {
+            activeDay = dayName;
+            const container = document.getElementById('schedule-list');
+            const items = schedulesData[dayName] || [];
+
+            document.getElementById('selected-day-label').textContent = `${dayName} - Jadwal Kelas 10.F`;
+
+            if (items.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 text-center py-8">Tidak ada jadwal pelajaran.</p>';
+                return;
+            }
+
+            container.innerHTML = items.map(item => {
+                if (item.type === 'break') {
+                    return `
+                        <div class="p-2.5 bg-amber-50/70 dark:bg-amber-950/20 rounded-xl border border-amber-200/60 dark:border-amber-800/40 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-mug-hot text-amber-500 text-xs"></i>
+                                <span class="text-xs font-bold text-amber-700 dark:text-amber-300">${item.subject}</span>
+                            </div>
+                            <span class="text-[11px] font-semibold text-amber-600 dark:text-amber-400">${item.time}</span>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="flex items-start space-x-3 p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm">
+                        <span class="text-xs font-bold text-brand-600 dark:text-brand-200 w-24 pt-0.5 shrink-0">${item.time}</span>
+                        <div class="flex-1">
+                            <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100">${item.subject}</h4>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-300 mt-0.5 flex items-center gap-1">
+                                <i class="fa-solid fa-user-tie text-[10px] text-brand-500"></i> ${item.teacher}
+                            </p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Pilih Hari di Tab Jadwal
+        function selectDay(button, dayName) {
+            const dayBtns = document.querySelectorAll('.day-btn');
+            dayBtns.forEach(btn => {
+                btn.className = 'day-btn px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition shrink-0 cursor-pointer active:scale-95';
+            });
+            button.className = 'day-btn px-4 py-2 rounded-xl bg-brand-500 text-white font-semibold transition shrink-0 cursor-pointer active:scale-95';
+
+            renderScheduleView(dayName);
+        }
+
+        // Pindah Tab / Screen
+        function switchTab(tabName) {
+            const screens = document.querySelectorAll('.view-screen');
+            screens.forEach(s => s.classList.add('hidden'));
+
+            const activeScreen = document.getElementById(`view-${tabName}`);
+            if (activeScreen) {
+                activeScreen.classList.remove('hidden');
+            }
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.className = 'nav-item flex-1 flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-slate-600 transition cursor-pointer active:scale-95 py-1';
+            });
+
+            const activeNav = document.getElementById(`nav-${tabName}`);
+            if (activeNav) {
+                activeNav.className = 'nav-item flex-1 flex flex-col items-center gap-1 text-brand-500 dark:text-brand-300 font-bold transition cursor-pointer active:scale-95 py-1';
+            }
+
+            if (tabName === 'beranda') {
+                renderHomeSchedule();
+            }
+        }
+
+        // Simpan Jadwal Baru
+        function handleSaveScheduleItem(e) {
+            e.preventDefault();
+            const day = document.getElementById('input-sched-day').value;
+            const time = document.getElementById('input-sched-time').value;
+            const subject = document.getElementById('input-sched-subject').value;
+            const teacher = document.getElementById('input-sched-teacher').value;
+
+            if (!schedulesData[day]) schedulesData[day] = [];
+
+            schedulesData[day].push({
+                time: time,
+                subject: subject,
+                teacher: teacher,
+                type: 'lesson'
+            });
+
+            closeModalById('modal-edit-schedule');
+            renderScheduleView(day);
+            renderHomeSchedule();
+            showToast(`Pelajaran baru untuk hari ${day} berhasil ditambahkan!`);
+        }
+
+        // Render Tugas
+        function renderTasks() {
+            const todoContainer = document.getElementById('tasks-todo-container');
+            const doneContainer = document.getElementById('tasks-done-container');
+
+            const pendingTasks = tasksList.filter(t => !t.done);
+            const doneTasks = tasksList.filter(t => t.done);
+
+            if (pendingTasks.length === 0) {
+                todoContainer.innerHTML = `
+                    <div class="p-6 bg-white dark:bg-slate-700/30 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 text-center">
+                        <i class="fa-regular fa-clipboard text-slate-300 dark:text-slate-500 text-2xl mb-2"></i>
+                        <p class="text-xs font-semibold text-slate-400">Belum ada tugas yang harus dikerjakan.</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Klik tombol + di atas untuk menambah tugas baru.</p>
+                    </div>
+                `;
+            } else {
+                todoContainer.innerHTML = pendingTasks.map(t => `
+                    <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <button onclick="toggleTaskDone('${t.id}')" class="w-8 h-8 rounded-xl bg-brand-50 dark:bg-slate-800 text-brand-600 dark:text-brand-200 flex items-center justify-center border border-brand-100 dark:border-slate-600 hover:bg-brand-500 hover:text-white transition active:scale-95 cursor-pointer shrink-0">
+                                <i class="fa-regular fa-file-lines text-sm"></i>
+                            </button>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100">${t.title}</h4>
+                                <p class="text-[11px] text-slate-400">${t.subject}</p>
+                                <p class="text-[10px] text-slate-400 mt-0.5">Deadline: ${t.deadline}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 text-[10px] font-semibold text-rose-500 bg-rose-50 dark:bg-rose-950/40 rounded-lg shrink-0">Belum</span>
+                            <button onclick="deleteTask('${t.id}')" class="text-slate-300 hover:text-rose-500 p-1 cursor-pointer"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            if (doneTasks.length === 0) {
+                doneContainer.innerHTML = `
+                    <div class="p-3 text-center text-xs text-slate-400">Belum ada tugas yang selesai.</div>
+                `;
+            } else {
+                doneContainer.innerHTML = doneTasks.map(t => `
+                    <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center opacity-75 shadow-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-slate-800 text-emerald-600 flex items-center justify-center border border-emerald-100 dark:border-slate-600 shrink-0">
+                                <i class="fa-solid fa-check text-xs"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 dark:text-slate-100 line-through">${t.title}</h4>
+                                <p class="text-[11px] text-slate-400">${t.subject}</p>
+                                <p class="text-[10px] text-slate-400 mt-0.5">Selesai</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 rounded-lg shrink-0">Selesai</span>
+                            <button onclick="deleteTask('${t.id}')" class="text-slate-300 hover:text-rose-500 p-1 cursor-pointer"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function handleAddTask(e) {
+            e.preventDefault();
+            const title = document.getElementById('input-task-title').value;
+            const subject = document.getElementById('input-task-subject').value;
+            const deadline = document.getElementById('input-task-date').value;
+
+            tasksList.unshift({
+                id: Date.now().toString(),
+                title,
+                subject,
+                deadline,
+                done: false
+            });
+
+            document.getElementById('input-task-title').value = '';
+            document.getElementById('input-task-subject').value = '';
+            document.getElementById('input-task-date').value = '';
+            closeModalById('modal-add-task');
+
+            renderTasks();
+            showToast('Tugas baru berhasil ditambahkan!');
+        }
+
+        function toggleTaskDone(id) {
+            const task = tasksList.find(t => t.id === id);
+            if (task) {
+                task.done = !task.done;
+                renderTasks();
+                showToast(task.done ? `Tugas "${task.title}" selesai! 🎉` : 'Status tugas diperbarui');
+            }
+        }
+
+        function deleteTask(id) {
+            tasksList = tasksList.filter(t => t.id !== id);
+            renderTasks();
+            showToast('Tugas dihapus');
+        }
+
+        function filterTasks(type, btn) {
+            const btns = document.querySelectorAll('.task-filter-btn');
+            btns.forEach(b => {
+                b.className = 'task-filter-btn px-4 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-semibold hover:bg-slate-200 transition cursor-pointer active:scale-95';
+            });
+            btn.className = 'task-filter-btn px-4 py-1.5 rounded-xl bg-brand-500 text-white font-semibold transition cursor-pointer active:scale-95';
+
+            const sectionBelum = document.getElementById('section-task-belum');
+            const sectionSelesai = document.getElementById('section-task-selesai');
+
+            if (type === 'semua') {
+                sectionBelum.classList.remove('hidden');
+                sectionSelesai.classList.remove('hidden');
+            } else if (type === 'belum') {
+                sectionBelum.classList.remove('hidden');
+                sectionSelesai.classList.add('hidden');
+            } else if (type === 'selesai') {
+                sectionBelum.classList.add('hidden');
+                sectionSelesai.classList.remove('hidden');
+            }
+        }
+
+        // Render Ujian
+        function renderExams() {
+            const examsContainer = document.getElementById('exams-container');
+
+            if (examsList.length === 0) {
+                examsContainer.innerHTML = `
+                    <div class="p-6 bg-white dark:bg-slate-700/30 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700 text-center">
+                        <i class="fa-solid fa-graduation-cap text-slate-300 dark:text-slate-500 text-2xl mb-2"></i>
+                        <p class="text-xs font-semibold text-slate-400">Belum ada jadwal ujian / UH.</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Klik tombol + di atas untuk menambahkan jadwal ujian.</p>
+                    </div>
+                `;
+            } else {
+                examsContainer.innerHTML = examsList.map(ex => `
+                    <div class="p-3.5 bg-white dark:bg-slate-700/50 rounded-2xl border border-slate-100 dark:border-slate-700 flex justify-between items-center shadow-sm">
+                        <div>
+                            <p class="text-[10px] text-brand-600 dark:text-brand-300 font-bold">${ex.type}</p>
+                            <h4 class="text-xs font-bold mt-0.5 text-slate-800 dark:text-white">${ex.subject}</h4>
+                            <p class="text-[11px] text-slate-400">Pengajar: ${ex.teacher}</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="px-2.5 py-1 text-[10px] font-bold text-brand-600 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/50 rounded-lg shrink-0">Mendatang</span>
+                            <button onclick="deleteExam('${ex.id}')" class="text-slate-300 hover:text-rose-500 p-1 cursor-pointer"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function handleAddExam(e) {
+            e.preventDefault();
+            const subject = document.getElementById('input-exam-subject').value;
+            const teacher = document.getElementById('input-exam-teacher').value;
+            const type = document.getElementById('input-exam-type').value;
+
+            examsList.unshift({
+                id: Date.now().toString(),
+                subject,
+                teacher,
+                type
+            });
+
+            document.getElementById('input-exam-subject').value = '';
+            document.getElementById('input-exam-teacher').value = '';
+            document.getElementById('input-exam-type').value = '';
+            closeModalById('modal-add-exam');
+
+            renderExams();
+            showToast('Jadwal Ujian berhasil ditambahkan!');
+        }
+
+        function deleteExam(id) {
+            examsList = examsList.filter(e => e.id !== id);
+            renderExams();
+            showToast('Jadwal ujian dihapus');
+        }
+
+        // Pengaturan & Theme Helpers
+        function openSettingsView() {
+            switchTab('pengaturan');
+        }
+
+        function setThemeColor(colorName) {
+            document.body.className = document.body.className.replace(/theme-\w+/g, '');
+            document.body.classList.add(`theme-${colorName}`);
+            showToast(`Warna tema diubah ke ${colorName.toUpperCase()}`);
+        }
+
+        function setDarkMode(isDark) {
+            const html = document.documentElement;
+            const btnLight = document.getElementById('btn-mode-light');
+            const btnDark = document.getElementById('btn-mode-dark');
+            const modeLabel = document.getElementById('current-theme-mode-label');
+
+            if (isDark) {
+                html.classList.add('dark');
+                btnDark.className = 'p-3 rounded-2xl border-2 border-brand-500 bg-white dark:bg-slate-700 flex items-center justify-between cursor-pointer active:scale-95';
+                btnDark.querySelector('i').className = 'fa-solid fa-circle-check text-brand-500 text-sm';
+
+                btnLight.className = 'p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 flex items-center justify-between cursor-pointer active:scale-95';
+                btnLight.querySelector('i').className = 'fa-regular fa-circle text-slate-300 dark:text-slate-500 text-sm';
+
+                if (modeLabel) modeLabel.textContent = 'Gelap';
+                showToast('Mode Gelap diaktifkan');
+            } else {
+                html.classList.remove('dark');
+                btnLight.className = 'p-3 rounded-2xl border-2 border-brand-500 bg-white dark:bg-slate-700 flex items-center justify-between cursor-pointer active:scale-95';
+                btnLight.querySelector('i').className = 'fa-solid fa-circle-check text-brand-500 text-sm';
+
+                btnDark.className = 'p-3 rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-700 flex items-center justify-between cursor-pointer active:scale-95';
+                btnDark.querySelector('i').className = 'fa-regular fa-circle text-slate-300 dark:text-slate-500 text-sm';
+
+                if (modeLabel) modeLabel.textContent = 'Terang';
+                showToast('Mode Terang diaktifkan');
+            }
+        }
+
+        function handleEditProfile(e) {
+            e.preventDefault();
+            const name = document.getElementById('input-profile-name').value;
+            const userClass = document.getElementById('input-profile-class').value;
+            const school = document.getElementById('input-profile-school').value;
+
+            document.getElementById('profile-name').textContent = name;
+            document.getElementById('user-display-name').textContent = name;
+            document.getElementById('profile-class').textContent = userClass;
+            document.getElementById('profile-school').textContent = school;
+
+            closeModalById('modal-edit-profile');
+            showToast('Profil siswa berhasil diperbarui!');
+        }
+
+        function copyAppLink() {
+            const dummyLink = window.location.href.includes('http') ? window.location.href : 'https://man5bogor.sch.id/kelas10f';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(dummyLink);
+            }
+            showToast('Link Aplikasi berhasil disalin! 📋');
+        }
+
+        let toastTimeout;
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = msg;
+
+            toast.classList.remove('opacity-0', 'pointer-events-none');
+            toast.classList.add('opacity-100');
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+
+        // Inisialisasi Saat Halaman Dimuat
+        window.onload = function() {
+            renderHomeSchedule();
+            renderScheduleView('Senin');
+            renderTasks();
+            renderExams();
+        };
+    </script>
+</body>
+</html>
